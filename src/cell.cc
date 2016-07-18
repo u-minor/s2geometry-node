@@ -1,13 +1,13 @@
-#include <node.h>
-#include <nan.h>
-#include "node_object_wrap.h"           // for Nan::Nan::ObjectWrap
-#include "v8.h"                         // for Handle, String, Integer, etc
-
 #include "s2.h"
 #include "s2cell.h"
 #include "s2cellid.h"
 #include "s2latlng.h"
 #include "cell.h"
+#include "functions.h"
+
+namespace {
+
+}
 
 NAN_METHOD(GenerateCellId) {
     bool bad_args = false;

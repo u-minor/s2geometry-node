@@ -4,7 +4,6 @@
             "target_name": "NativeExtension",
             "sources": [
                 "src/NativeExtension.cc",
-                "src/functions.cc",
                 "src/cell.cc",
                 "./geometry/s2.cc",
                 "./geometry/s1interval.cc",
