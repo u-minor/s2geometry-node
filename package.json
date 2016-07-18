@@ -1,0 +1,23 @@
+{
+  "name": "s2cellid-node",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "configure": "node-gyp configure",
+    "build": "node-gyp build",
+    "test": "mocha"
+  },
+  "dependencies": {
+    "bindings": "^1.2.1"
+  },
+  "devDependencies": {
+    "nan": "^2.0.9",
+    "mocha": "^2.2.5",
+    "node-gyp": "^1.0.3"
+  },
+  "author": "Billy Riantono <billy@riantono.com>",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/xygroup/node-s2.git"
+  }
+}
