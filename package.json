@@ -5,13 +5,14 @@
   "scripts": {
     "configure": "node-gyp configure",
     "build": "node-gyp build",
-    "test": "mocha"
+    "test": "mocha",
+    "install": "node-gyp rebuild"
   },
   "dependencies": {
-    "bindings": "^1.2.1"
+    "bindings": "^1.2.1",
+    "nan": "^2.0.9"
   },
   "devDependencies": {
-    "nan": "^2.0.9",
     "mocha": "^2.2.5",
     "node-gyp": "^1.0.3"
   },
@@ -19,5 +20,20 @@
   "repository": {
     "type": "git",
     "url": "git://github.com/xygroup/node-s2.git"
-  }
+  },
+  "gypfile": true,
+  "description": "Bindings for the [S2 Geometry Library](https://code.google.com/p/s2-geometry-library/) into [node.js](http://nodejs.org/).",
+  "bugs": {
+    "url": "https://github.com/xygroup/node-s2/issues"
+  },
+  "homepage": "https://github.com/xygroup/node-s2#readme",
+  "directories": {
+    "test": "test"
+  },
+  "keywords": [
+    "s2",
+    "s2sphere",
+    "s2-node"
+  ],
+  "license": "ISC"
 }
