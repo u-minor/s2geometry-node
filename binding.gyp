@@ -4,7 +4,9 @@
             "target_name": "NativeExtension",
             "sources": [
                 "src/NativeExtension.cc",
-                "src/cell.cc",
+                "src/point.cc",
+                "src/latlng.cc",
+                "src/cellid.cc",
                 "./geometry/s2.cc",
                 "./geometry/s1interval.cc",
                 "./geometry/util/math/exactfloat/exactfloat.cc",

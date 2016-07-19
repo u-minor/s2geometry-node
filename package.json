@@ -1,6 +1,6 @@
 {
-  "name": "s2cellid-node",
-  "version": "1.0.0",
+  "name": "s2geometry-node",
+  "version": "1.0.2",
   "main": "index.js",
   "scripts": {
     "configure": "node-gyp configure",
@@ -19,14 +19,14 @@
   "author": "Billy Riantono <billy@riantono.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/xygroup/node-s2.git"
+    "url": "git://github.com/billyriantono/s2cellid-node.git"
   },
   "gypfile": true,
   "description": "Bindings for the [S2 Geometry Library](https://code.google.com/p/s2-geometry-library/) into [node.js](http://nodejs.org/).",
   "bugs": {
-    "url": "https://github.com/xygroup/node-s2/issues"
+    "url": "https://github.com/billyriantono/s2cellid-node/issues"
   },
-  "homepage": "https://github.com/xygroup/node-s2#readme",
+  "homepage": "https://github.com/billyriantono/s2cellid-node#readme",
   "directories": {
     "test": "test"
   },

@@ -1,13 +1,16 @@
-#include "cell.h"
+#include <node.h>
+#include "point.h"
+#include "latlng.h"
+#include "cellid.h"
 
-using v8::FunctionTemplate;
 
-// NativeExtension.cc represents the top level of the module.
-// C++ constructs that are exposed to javascript are exported here
-
-NAN_MODULE_INIT(InitAll) {
-     Nan::Set(target, Nan::New("GenerateCellId").ToLocalChecked(),
-        Nan::GetFunction(Nan::New<FunctionTemplate>(GenerateCellId)).ToLocalChecked());
+using namespace v8;
+namespace s2geo{
+void InitAll(Local<Object> exports) {
+    Point::Init(exports);
+    LatLng::Init(exports);
+    CellId::Init(exports);
 }
 
 NODE_MODULE(NativeExtension, InitAll)
+}
