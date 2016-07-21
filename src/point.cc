@@ -36,13 +36,14 @@ void Point::New(const FunctionCallbackInfo<Value>& args) {
             return;
     }
 
-//    if (args[0]->IsExternal()) {
-//            Local<External> ext = Local<External>::Cast(args[0]);
-//            void* ptr = ext->Value();
-//            Point* p = static_cast<Point*>(ptr);
-//            p->Wrap(args.This());
-//            args.GetReturnValue().Set(args.This());
-//        }
+   if (args[0]->IsExternal()) {
+           Local<External> ext = Local<External>::Cast(args[0]);
+           void* ptr = ext->Value();
+           Point* p = static_cast<Point*>(ptr);
+           p->Wrap(args.This());
+           args.GetReturnValue().Set(args.This());
+           return;
+    }
 
         if (args.Length() != 3) {
         isolate->ThrowException(Exception::TypeError(
