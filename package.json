@@ -19,14 +19,14 @@
   "author": "Billy Riantono <billy@riantono.com>",
   "repository": {
     "type": "git",
-    "url": "git://github.com/billyriantono/s2cellid-node.git"
+    "url": "git://github.com/billyriantono/s2geometry-node.git"
   },
   "gypfile": true,
   "description": "Bindings for the [S2 Geometry Library](https://code.google.com/p/s2-geometry-library/) into [node.js](http://nodejs.org/).",
   "bugs": {
-    "url": "https://github.com/billyriantono/s2cellid-node/issues"
+    "url": "https://github.com/billyriantono/s2geometry-node/issues"
   },
-  "homepage": "https://github.com/billyriantono/s2cellid-node#readme",
+  "homepage": "https://github.com/billyriantono/s2geometry-node#readme",
   "directories": {
     "test": "test"
   },
