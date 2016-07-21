@@ -1,4 +1,4 @@
-# s2cellid-node
+# s2geometry-node
 
 One day i need to play with S2 Geometry in Node, i found node-s2, unfortunately that library is outdated only support node v0.10.0 so i am trying to make the  addon to be work again.
 
