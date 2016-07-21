@@ -52,6 +52,7 @@ if (args[0]->IsExternal()) {
         LatLng* ll = static_cast<LatLng*>(ptr);
         ll->Wrap(args.This());
         args.GetReturnValue().Set(args.This());
+        return;
     }
 
     LatLng* obj = new LatLng();
@@ -80,16 +81,29 @@ if (args[0]->IsExternal()) {
     args.GetReturnValue().Set(args.This());
 }
 
-Local<Object> LatLng::New(S2LatLng s2latlng) {
-    Isolate* isolate = Isolate::GetCurrent();
-    EscapableHandleScope scope(isolate);
-    LatLng* obj = new LatLng();
-    obj->this_ = s2latlng;
-    Local<Value> ext = External::New(isolate,obj);
-    Local<Context> context = isolate->GetCurrentContext();
-    Local<FunctionTemplate> cons = Local<FunctionTemplate>::New(isolate, constructor);
-    Local<Object> handleObject = cons->GetFunction()->NewInstance(context,1, &ext).ToLocalChecked();
-    return scope.Escape(handleObject);
+Local<Object> LatLng::CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args, S2LatLng ll) {
+        Isolate* isolate = args.GetIsolate();
+        v8::TryCatch try_catch(isolate);
+       LatLng* obj = new LatLng();
+        obj->this_ = ll;
+        Local<Value> ext = External::New(isolate,obj);
+        Local<Context> context = isolate->GetCurrentContext();
+        Local<FunctionTemplate> cons = Local<FunctionTemplate>::New(isolate, constructor);
+        
+        MaybeLocal<Object> handleObject = cons->GetFunction()->NewInstance(context,1, &ext);
+        v8::String::Utf8Value exception(try_catch.Exception());
+        v8::String::Utf8Value stack_trace(try_catch.StackTrace());
+        if(handleObject.IsEmpty()){
+        if (stack_trace.length() > 0) {
+            const char* stack_trace_string = *stack_trace;
+            printf("%s\n", stack_trace_string);
+        }
+        if(exception.length() > 0){
+             const char* stack_trace_string = *exception;
+            printf("%s\n", stack_trace_string);
+        }
+        }
+        return handleObject.ToLocalChecked();
 }
 
 void LatLng::Lat(v8::Local<v8::String> property, const PropertyCallbackInfo<v8::Value>& args){
@@ -116,12 +130,12 @@ void LatLng::IsValid(const FunctionCallbackInfo<Value>& args) {
 
 void LatLng::Normalized(const FunctionCallbackInfo<Value>& args) {
   LatLng* obj = ObjectWrap::Unwrap<LatLng>(args.Holder());
-  args.GetReturnValue().Set(LatLng::New(obj->this_.Normalized()));
+  args.GetReturnValue().Set(LatLng::CreateNew(args,obj->this_.Normalized()));
 }
 
 void LatLng::ToPoint(const FunctionCallbackInfo<Value>& args) {
    LatLng* obj = ObjectWrap::Unwrap<LatLng>(args.Holder());
-   args.GetReturnValue().Set(Point::New(obj->this_.ToPoint()));
+   args.GetReturnValue().Set(Point::CreateNew(args,obj->this_.ToPoint()));
 }
 
 void LatLng::Distance(const FunctionCallbackInfo<Value>& args) {

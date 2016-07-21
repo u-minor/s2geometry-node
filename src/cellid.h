@@ -19,7 +19,7 @@ public:
     CellId();
     static v8::Persistent<v8::FunctionTemplate> constructor;
     static void Init(v8::Local<v8::Object> exports);
-    static v8::Local<v8::Value> New(const S2CellId c);
+    static Local<Object> CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args, S2CellId c);
     inline S2CellId get() { return this_; }
 
 protected:

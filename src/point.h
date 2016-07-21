@@ -9,14 +9,13 @@
 namespace s2geo {
 class Point : public node::ObjectWrap {
 public:
-    Point();
     static void Init(v8::Local<v8::Object> exports);
     inline S2Point get() { return this_; }
-    static v8::Local<v8::Object> New(const S2Point c);
+    static v8::Local<v8::Object> CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args,S2Point c);
     static v8::Persistent<v8::FunctionTemplate> constructor;
 
 protected:
-    ~Point();
+    Point();
 
     static void New(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void X(const v8::FunctionCallbackInfo<v8::Value>& args);

@@ -53,13 +53,14 @@ void CellId::New(const FunctionCallbackInfo<Value>& args) {
                         String::NewFromUtf8(isolate, "Use the new operator to create instances of this object.")));
                     return;
     }
-
+    
     if (args[0]->IsExternal()) {
         Local<External> ext = Local<External>::Cast(args[0]);
         void* ptr = ext->Value();
         CellId* cellid = static_cast<CellId*>(ptr);
         cellid->Wrap(args.This());
          args.GetReturnValue().Set(args.This());
+        return;
     }
 
     CellId* obj = new CellId();
@@ -92,19 +93,29 @@ void CellId::New(const FunctionCallbackInfo<Value>& args) {
      args.GetReturnValue().Set(args.This());
 }
 
-Local<Value> CellId::New(const S2CellId s2cellid) {
-    Isolate* isolate = Isolate::GetCurrent();
-        EscapableHandleScope scope(isolate);
+Local<Object> CellId::CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args, S2CellId s2cellid) {
+        Isolate* isolate = args.GetIsolate();
+        v8::TryCatch try_catch(isolate);
         CellId* obj = new CellId();
         obj->this_ = s2cellid;
         Local<Value> ext = External::New(isolate,obj);
         Local<Context> context = isolate->GetCurrentContext();
         Local<FunctionTemplate> cons = Local<FunctionTemplate>::New(isolate, constructor);
-
+        
         MaybeLocal<Object> handleObject = cons->GetFunction()->NewInstance(context,1, &ext);
-
-            return scope.Escape(handleObject.ToLocalChecked());
-
+        v8::String::Utf8Value exception(try_catch.Exception());
+        v8::String::Utf8Value stack_trace(try_catch.StackTrace());
+        if(handleObject.IsEmpty()){
+        if (stack_trace.length() > 0) {
+            const char* stack_trace_string = *stack_trace;
+            printf("%s\n", stack_trace_string);
+        }
+        if(exception.length() > 0){
+             const char* stack_trace_string = *exception;
+            printf("%s\n", stack_trace_string);
+        }
+        }
+        return handleObject.ToLocalChecked();
 }
 
 void CellId::FromToken(const FunctionCallbackInfo<Value>& args) {
@@ -116,98 +127,98 @@ void CellId::FromToken(const FunctionCallbackInfo<Value>& args) {
         }
          v8::String::Utf8Value str(args[0]->ToString());
         std::string strtoken {*str};
-        CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+        CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
         obj->this_ = S2CellId::FromToken(strtoken);
      args.GetReturnValue().Set(args.This());
 }
 
 void CellId::Level(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     args.GetReturnValue().Set(Number::New(isolate,obj->this_.level()));
 }
 
 void CellId::ToToken(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     args.GetReturnValue().Set(String::NewFromUtf8(isolate,obj->this_.ToToken().c_str()));
 }
 
 void CellId::ToString(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     args.GetReturnValue().Set(String::NewFromUtf8(isolate,obj->this_.ToString().c_str()));
 }
 
 void CellId::ToPoint(const FunctionCallbackInfo<Value>& args) {
 
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
-    args.GetReturnValue().Set(Point::New(obj->this_.ToPoint()));
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(Point::CreateNew(args,obj->this_.ToPoint()));
 }
 
 void CellId::Parent(const FunctionCallbackInfo<Value>& args) {
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     if (args.Length() == 1 && args[0]->IsNumber()) {
-             args.GetReturnValue().Set(CellId::New(obj->this_.parent(args[0]->ToNumber()->Value())));
+             args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.parent(args[0]->ToNumber()->Value())));
      } else {
-            args.GetReturnValue().Set(CellId::New(obj->this_.parent()));
+            args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.parent()));
      }
 }
 
 void CellId::Prev(const FunctionCallbackInfo<Value>& args) {
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
-    args.GetReturnValue().Set(CellId::New(obj->this_.prev()));
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.prev()));
 }
 
 void CellId::Next(const FunctionCallbackInfo<Value>& args) {
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
-    args.GetReturnValue().Set(CellId::New(obj->this_.next()));
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.next()));
 }
 
 
 void CellId::IsFace(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     args.GetReturnValue().Set(Boolean::New(isolate,obj->this_.is_face()));
 }
 
 void CellId::RangeMin(const FunctionCallbackInfo<Value>& args) {
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
-    args.GetReturnValue().Set(CellId::New(obj->this_.range_min()));
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.range_min()));
 }
 
 void CellId::RangeMax(const FunctionCallbackInfo<Value>& args) {
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
-    args.GetReturnValue().Set(CellId::New(obj->this_.range_max()));
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.range_max()));
 }
 
 void CellId::Contains(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* cellid = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* cellid = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     S2CellId other = node::ObjectWrap::Unwrap<CellId>(args[0]->ToObject())->get();
     args.GetReturnValue().Set(Boolean::New(isolate,cellid->this_.contains(other)));
 }
 
 void CellId::Id(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     args.GetReturnValue().Set(Number::New(isolate,obj->this_.id()));
 }
 
 void CellId::Child(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
         if (args.Length() != 1) {
             isolate->ThrowException(Exception::TypeError(
                                         String::NewFromUtf8(isolate,("(number) required"))));
             return;
         }
-    args.GetReturnValue().Set(CellId::New(obj->this_.child(args[0]->ToNumber()->Value())));
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.child(args[0]->ToNumber()->Value())));
 }
 
 
 void CellId::ToLatLng(const FunctionCallbackInfo<Value>& args) {
-    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.This());
-    args.GetReturnValue().Set(LatLng::New(obj->this_.ToLatLng()));
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(LatLng::CreateNew(args,obj->this_.ToLatLng()));
 }
 }

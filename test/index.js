@@ -2,7 +2,6 @@ var s2 = require('../');
 var assert = require('assert');
 
 describe('s2', function () {
-    console.dir(s2);
     it("should export a function that calculates the distance between two points on the earth's surface", function () {
         var los_angeles = {lat: 34.0522, long: 118.2437}
         var new_york = {lat: 40.7128, long: 74.0059}
@@ -90,7 +89,7 @@ describe('s2', function () {
 
     it("should walk", function () {
         // var los_angeles = {lat: 34.0522, long: 118.2437}
-        // var origin = new s2.S2CellId(new s2.S2LatLng(40, 20));
+         var origin = new s2.S2CellId(new s2.S2LatLng(44.0378862, 10.0458712));
         // // var walk = [origin.id()];
         // var next = origin.next()
         // // prev = origin.prev()
@@ -99,12 +98,13 @@ describe('s2', function () {
         // // walk.append(next.id())
         // // next = next.next()
         // // prev = prev.prev()
-        var ll = new s2.S2LatLng(0, 0);
-        ll.isValid(); // true
-        var normalized = ll.normalized(); // true
-        var pt = ll.toPoint();
-        console.dir(pt);
-        // console.dir(origin.parent());
+        //var ll = new s2.S2LatLng(40, 20);//.toPoint();
+
+        //var normalized = ll.normalized(); // true
+        //var pt = ll.toString();
+        //console.dir(pt);
+         console.dir(origin.parent());
+
         assert(false);
 
     })
