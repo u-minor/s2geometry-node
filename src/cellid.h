@@ -39,6 +39,7 @@ protected:
     static void RangeMin(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void RangeMax(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void Id(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void IdString(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void Child(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void Contains(const v8::FunctionCallbackInfo<v8::Value>& args);
 

@@ -37,6 +37,7 @@ void CellId::Init(Local<Object> exports) {
     NODE_SET_PROTOTYPE_METHOD(tpl, "rangeMin", RangeMin);
     NODE_SET_PROTOTYPE_METHOD(tpl, "rangeMax", RangeMax);
     NODE_SET_PROTOTYPE_METHOD(tpl, "id", Id);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "idString", IdString);
     NODE_SET_PROTOTYPE_METHOD(tpl, "child", Child);
     NODE_SET_PROTOTYPE_METHOD(tpl, "contains", Contains);
 
@@ -203,6 +204,12 @@ void CellId::Id(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
     CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     args.GetReturnValue().Set(Number::New(isolate,obj->this_.id()));
+}
+
+void CellId::IdString(const FunctionCallbackInfo<Value>& args){
+    Isolate* isolate = args.GetIsolate();
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(String::NewFromUtf8(isolate, std::to_string(obj->this_.id()).c_str()));
 }
 
 void CellId::Child(const FunctionCallbackInfo<Value>& args) {
