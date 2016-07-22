@@ -6,7 +6,7 @@ namespace s2geo{
 Persistent<FunctionTemplate> Point::constructor;
 
 void Point::Init(Handle<Object> exports) {
-    Isolate* isolate = exports->GetIsolate();
+      Isolate* isolate = exports->GetIsolate();
 
     // Prepare constructor template
       Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);

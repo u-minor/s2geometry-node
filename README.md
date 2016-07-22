@@ -18,6 +18,7 @@ For usage information, see the examples in the `examples/` directory.
 * S2Cell
 * S2Cap
 * S2LatLngRect
+* S2Interval
 
 
 ## Contact Me 

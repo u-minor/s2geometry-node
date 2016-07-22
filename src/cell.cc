@@ -49,6 +49,7 @@ void Cell::New(const FunctionCallbackInfo<Value>& args) {
         void* ptr = ext->Value();
         Cell* ll = static_cast<Cell*>(ptr);
         ll->Wrap(args.This());
+        args.GetReturnValue().Set(args.This());
         return;
     }
 

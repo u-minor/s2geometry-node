@@ -10,6 +10,7 @@
                 "src/cell.cc",
                 "src/latlngrect.cc",
                 "src/cap.cc",
+                "src/interval.cc",
                 "./geometry/s2.cc",
                 "./geometry/s1interval.cc",
                 "./geometry/util/math/exactfloat/exactfloat.cc",

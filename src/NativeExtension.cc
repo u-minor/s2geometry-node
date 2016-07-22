@@ -5,6 +5,7 @@
 #include "cell.h"
 #include "latlngrect.h"
 #include "cap.h"
+#include "interval.h"
 
 
 using namespace v8;
@@ -16,6 +17,7 @@ void InitAll(Local<Object> exports) {
     Cap::Init(exports);
     LatLngRect::Init(exports);
     Cell::Init(exports);
+    Interval::Init(exports);
 }
 
 NODE_MODULE(NativeExtension, InitAll)
