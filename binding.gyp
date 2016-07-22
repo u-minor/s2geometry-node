@@ -41,7 +41,6 @@
                 'NDEBUG'
             ],
             "include_dirs": [
-                "<!(node -e \"require('nan')\")",
                 "./viewfinder/",
                 "./geometry/",
                 "./geometry/base/",
