@@ -2,7 +2,11 @@
 
 #include "s2regioncoverer.h"
 
+#ifdef _WIN32
+#include <include/pthread.h>
+#else
 #include <pthread.h>
+#endif
 
 #include <algorithm>
 using std::min;

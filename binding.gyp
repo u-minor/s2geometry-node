@@ -44,7 +44,6 @@
                 "./viewfinder/",
                 "./geometry/",
                 "./geometry/base/",
-                "./geometry/include/",
                 "./geometry/util/",
                 "./geometry/util/math/",
                 "./geometry/strings/"
