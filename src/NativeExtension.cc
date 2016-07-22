@@ -6,6 +6,7 @@
 #include "latlngrect.h"
 #include "cap.h"
 #include "interval.h"
+#include "angle.h"
 
 
 using namespace v8;
@@ -18,6 +19,7 @@ void InitAll(Local<Object> exports) {
     LatLngRect::Init(exports);
     Cell::Init(exports);
     Interval::Init(exports);
+    Angle::Init(exports);
 }
 
 NODE_MODULE(NativeExtension, InitAll)
