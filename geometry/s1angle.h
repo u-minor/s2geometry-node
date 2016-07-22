@@ -2,6 +2,7 @@
 
 #ifndef UTIL_GEOMETRY_S1ANGLE_H_
 #define UTIL_GEOMETRY_S1ANGLE_H_
+#define _USE_MATH_DEFINES
 
 #include <iosfwd>
 using std::ostream;

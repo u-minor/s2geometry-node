@@ -3,6 +3,9 @@
 #ifndef UTIL_GEOMETRY_S2_H_
 #define UTIL_GEOMETRY_S2_H_
 
+#define _USE_MATH_DEFINES
+#include <cmath>
+
 #include <algorithm>
 using std::min;
 using std::max;

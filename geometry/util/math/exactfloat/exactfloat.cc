@@ -1,5 +1,6 @@
 // Copyright 2009 Google Inc. All Rights Reserved.
 
+#define _USE_MATH_DEFINES
 #include "util/math/exactfloat/exactfloat.h"
 #include <cstring>
 #include <cmath>
