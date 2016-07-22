@@ -19,7 +19,6 @@
 #ifdef _MSC_VER
 
     #define PRINTF_ATTRIBUTE(string_index, first_to_check) \
-        __attribute__((__format__ (__printf__, string_index, first_to_check)))
 
     #define PACK( __Declaration__ ) \
         __pragma( pack(push, 1) ) __Declaration__ __pragma( pack(pop) )
