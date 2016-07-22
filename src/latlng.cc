@@ -1,5 +1,3 @@
-#include <node.h>
-#include "node_object_wrap.h"           // for ObjectWrap
 #include "latlng.h"
 
 namespace s2geo {

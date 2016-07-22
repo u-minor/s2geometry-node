@@ -1,54 +1,49 @@
-#include <node.h>
-#include <nan.h>
-#include "node_object_wrap.h"           // for ObjectWrap
-#include "v8.h"                         // for Handle, String, Integer, etc
-
-#include "s2.h"
-#include "s2cap.h"
-#include "s2latlngrect.h"
-#include "point.h"
 #include "cap.h"
-#include "latlngrect.h"
 
+namespace s2geo {
 using namespace v8;
 
 Persistent<FunctionTemplate> Cap::constructor;
 
-void Cap::Init(Handle<Object> target) {
-    NanScope();
+void Cap::Init(Local<Object> exports) {
+   Isolate* isolate = exports->GetIsolate();
 
-    constructor = Persistent<FunctionTemplate>::New(FunctionTemplate::New(Cap::New));
-    Local<String> name = String::NewSymbol("S2Cap");
+    // Prepare constructor template
+    Local<FunctionTemplate> tpl = FunctionTemplate::New(isolate, New);
+    tpl->SetClassName(String::NewFromUtf8(isolate, "S2Cap"));
+    tpl->InstanceTemplate()->SetInternalFieldCount(1);
 
-    constructor->InstanceTemplate()->SetInternalFieldCount(1);
-    constructor->SetClassName(name);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "getRectBound", GetRectBound);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "intersects", Intersects);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "interiorIntersects", InteriorIntersects);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "contains", Contains);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "complement", Complement);
 
-    NODE_SET_PROTOTYPE_METHOD(constructor, "getRectBound", GetRectBound);
-    NODE_SET_PROTOTYPE_METHOD(constructor, "intersects", Intersects);
-    NODE_SET_PROTOTYPE_METHOD(constructor, "interiorIntersects", InteriorIntersects);
-    NODE_SET_PROTOTYPE_METHOD(constructor, "contains", Contains);
-    NODE_SET_PROTOTYPE_METHOD(constructor, "complement", Complement);
-
-    target->Set(name, constructor->GetFunction());
+    constructor.Reset(isolate, tpl);
+    exports->Set(String::NewFromUtf8(isolate, "S2Cap"),
+               tpl->GetFunction());
 }
 
 Cap::Cap()
     : ObjectWrap(),
       this_() {}
 
-Handle<Value> Cap::New(const Arguments& args) {
-    NanScope();
-
+void Cap::New(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
     if (!args.IsConstructCall()) {
-        return NanThrowError("Use the new operator to create instances of this object.");
+         isolate->ThrowException(Exception::TypeError(
+                        String::NewFromUtf8(isolate, "Use the new operator to create instances of this object.")));
+                    return;
     }
+
 
     if (args[0]->IsExternal()) {
         Local<External> ext = Local<External>::Cast(args[0]);
         void* ptr = ext->Value();
         Cap* ll = static_cast<Cap*>(ptr);
         ll->Wrap(args.This());
-        return args.This();
+        args.GetReturnValue().Set(args.This());
+        return;
     }
 
     Cap* obj = new Cap();
@@ -56,58 +51,64 @@ Handle<Value> Cap::New(const Arguments& args) {
     obj->Wrap(args.This());
 
     if (args.Length() == 2 && args[1]->IsNumber()) {
-        Handle<Object> fromObj = args[0]->ToObject();
-        if (NanHasInstance(Point::constructor, fromObj)) {
+        Local<Object> fromObj = args[0]->ToObject();
+        Local<FunctionTemplate> point = Local<FunctionTemplate>::New(isolate,Point::constructor);
+        if (point->HasInstance(fromObj)) {
             S2Point p = node::ObjectWrap::Unwrap<Point>(fromObj)->get();
             obj->this_ = S2Cap::FromAxisHeight(p, args[1]->ToNumber()->Value());
         } else {
-            return NanThrowError("S2Cap requires arguments (S2Point, number)");
+            isolate->ThrowException(Exception::TypeError(
+                        String::NewFromUtf8(isolate, "S2Cap requires arguments (S2Point, number)")));
+                    return;
         }
     } else {
-        return NanThrowError("S2Cap requires arguments (S2Point, number)");
+        isolate->ThrowException(Exception::TypeError(
+                        String::NewFromUtf8(isolate,"S2Cap requires arguments (S2Point, number)")));
+                    return;
     }
 
-    return args.This();
+    args.GetReturnValue().Set(args.This());
 }
 
-Handle<Value> Cap::New(S2Cap s2cap) {
-    NanScope();
+Local<Object> Cap::CreateNew(const FunctionCallbackInfo<Value>& args,S2Cap s2cap) {
+    Isolate* isolate = args.GetIsolate();
     Cap* obj = new Cap();
     obj->this_ = s2cap;
-    Handle<Value> ext = External::New(obj);
-    Handle<Object> handleObject = constructor->GetFunction()->NewInstance(1, &ext);
-    return scope.Close(handleObject);
+    Local<Value> ext = External::New(isolate,obj);
+    Local<FunctionTemplate> cons = Local<FunctionTemplate>::New(isolate,constructor);
+    Local<Context> context=  isolate->GetCurrentContext();
+    Local<Object> handleObject = cons->GetFunction()->NewInstance(context, 1, &ext).ToLocalChecked();
+    return handleObject;
 }
 
-NAN_METHOD(Cap::GetRectBound) {
-    NanScope();
-    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.This());
-    NanReturnValue(LatLngRect::New(cap->this_.GetRectBound()));
+void Cap::GetRectBound(const FunctionCallbackInfo<Value>& args){
+    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.Holder());
+    args.GetReturnValue().Set(LatLngRect::CreateNew(args,cap->this_.GetRectBound()));
 }
 
-NAN_METHOD(Cap::Intersects) {
-    NanScope();
-    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.This());
+void Cap::Intersects(const FunctionCallbackInfo<Value>& args){
+    Isolate* isolate = args.GetIsolate();
+    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.Holder());
     S2Cap other = node::ObjectWrap::Unwrap<Cap>(args[0]->ToObject())->get();
-    NanReturnValue(NanNew<Boolean>(cap->this_.Intersects(other)));
+    args.GetReturnValue().Set(Boolean::New(isolate,cap->this_.Intersects(other)));
 }
 
-NAN_METHOD(Cap::InteriorIntersects) {
-    NanScope();
-    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.This());
+void Cap::InteriorIntersects(const FunctionCallbackInfo<Value>& args){
+    Isolate* isolate = args.GetIsolate();
+    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.Holder());
     S2Cap other = node::ObjectWrap::Unwrap<Cap>(args[0]->ToObject())->get();
-    NanReturnValue(NanNew<Boolean>(cap->this_.Intersects(other)));
+    args.GetReturnValue().Set(Boolean::New(isolate,cap->this_.Intersects(other)));
 }
 
-NAN_METHOD(Cap::Contains) {
-    NanScope();
-    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.This());
+void Cap::Contains(const FunctionCallbackInfo<Value>& args){
+    Isolate* isolate = args.GetIsolate();
+    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.Holder());
     S2Cap other = node::ObjectWrap::Unwrap<Cap>(args[0]->ToObject())->get();
-    NanReturnValue(NanNew<Boolean>(cap->this_.Contains(other)));
+    args.GetReturnValue().Set(Boolean::New(isolate,cap->this_.Contains(other)));
 }
 
-NAN_METHOD(Cap::Complement) {
-    NanScope();
-    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.This());
-    NanReturnValue(Cap::New(cap->this_.Complement()));
+void Cap::Complement(const FunctionCallbackInfo<Value>& args){
+    Cap* cap = node::ObjectWrap::Unwrap<Cap>(args.Holder());
+    args.GetReturnValue().Set(Cap::CreateNew(args,cap->this_.Complement()));
+}
 }

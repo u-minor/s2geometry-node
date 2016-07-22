@@ -16,26 +16,25 @@ public:
     static v8::Persistent<v8::FunctionTemplate> constructor;
     static void Init(v8::Local<v8::Object> target);
     inline S2Cell get() { return this_; }
-    static v8::Local<v8::Value> New(const S2Cell c);
-    static v8::Local<v8::Value> New(const S2CellId c);
+    static Local<Object> CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args,S2Cell c);
+    static Local<Object> CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args,S2CellId c);
 
 protected:
     Cell();
 
-    static v8::Handle<v8::Value> New(const v8::Arguments& args);
-    // static v8::Handle<v8::Value> ApproxArea(const v8::Arguments& args);
-    static NAN_METHOD(ApproxArea);
-    static NAN_METHOD(ExactArea);
-    static NAN_METHOD(Face);
-    static NAN_METHOD(Level);
-    static NAN_METHOD(AverageArea);
-    static NAN_METHOD(Orientation);
-    static NAN_METHOD(IsLeaf);
-    static NAN_METHOD(GetCapBound);
-    static NAN_METHOD(GetCenter);
-    static NAN_METHOD(GetVertex);
-    static NAN_METHOD(ToString);
-    static NAN_METHOD(Id);
+    static void  New(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  ApproxArea(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  ExactArea(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  Face(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  Level(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  AverageArea(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  Orientation(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  IsLeaf(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  GetCapBound(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  GetCenter(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  GetVertex(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  ToString(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void  Id(const v8::FunctionCallbackInfo<v8::Value>& args);
 
     S2Cell this_;
 };

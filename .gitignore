@@ -29,4 +29,5 @@ node_modules
 /build
 
 .idea
+.vscode
 update_nan.sh
