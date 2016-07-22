@@ -36,10 +36,10 @@ Some of the S2 API is not wrapped because it isn't meant to be exposed in this w
 
 ## See Also
 
-[s2-geometry-javascript](https://github.com/jonatkins/s2-geometry-javascript) - an incomplete port of S2 to JavaScript.
-[gos2](https://code.google.com/p/gos2/) - very incomplete port to Go
-[s2-geometry-php](https://github.com/eelf/s2-geometry-library-php) - another very incomplete port to PHP
-[mapbox/node-s2](https://github.com/mapbox/node-s2)
+* [s2-geometry-javascript](https://github.com/jonatkins/s2-geometry-javascript) - an incomplete port of S2 to JavaScript.
+* [gos2](https://code.google.com/p/gos2/) - very incomplete port to Go
+* [s2-geometry-php](https://github.com/eelf/s2-geometry-library-php) - another very incomplete port to PHP
+* [mapbox/node-s2](https://github.com/mapbox/node-s2)
 
 ## Contact Me 
 [@billyriantono](http://twitter.com/kebluk_id) Feel free to contact me for help or anything else
