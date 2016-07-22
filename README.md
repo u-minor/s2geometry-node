@@ -12,9 +12,12 @@ For usage information, see the examples in the `examples/` directory.
 
 
 ## Currently Ported
-S2CellId 
-S2LatLng
-S2Point
+* S2CellId 
+* S2LatLng
+* S2Point
+* S2Cell
+* S2Cap
+* S2LatLngRect
 
 
 ## Contact Me 
