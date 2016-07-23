@@ -42,6 +42,10 @@ Some of the S2 API is not wrapped because it isn't meant to be exposed in this w
 * [s2-geometry-php](https://github.com/eelf/s2-geometry-library-php) - another very incomplete port to PHP
 * [mapbox/node-s2](https://github.com/mapbox/node-s2)
 
+## Thanks
+* mapbox team
+* chhyperix93
+
 ## Contact Me 
 [@billyriantono](http://twitter.com/kebluk_id) Feel free to contact me for help or anything else
 
