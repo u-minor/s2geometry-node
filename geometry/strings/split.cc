@@ -191,6 +191,91 @@ template<> struct hash<string> : PortableHashBase {
 #endif
 }  // hash namespace
 */
+#ifdef __APPLE__
+#define HASH_TO(arglist, command)                              \
+inline uint32 HashTo32 arglist {                               \
+  uint32 retval = command;                                     \
+  return retval == kIllegalHash32 ? retval-1 : retval;         \
+}                                                              \
+inline uint16 HashTo16 arglist {                               \
+  uint16 retval16 = command >> 16;                             \
+  return retval16 == kIllegalHash16 ? retval16-1 : retval16;   \
+}                                                              \
+inline unsigned char HashTo8 arglist {                         \
+  unsigned char retval8 = command >> 24;                       \
+  return retval8 == kIllegalHash8 ? retval8-1 : retval8;       \
+}
+
+// This defines:
+// HashToXX(char *s, int slen);
+// HashToXX(char c);
+// etc
+
+HASH_TO((const char *s, uint32 slen), Hash32StringWithSeed(s, slen, MIX32))
+HASH_TO((const wchar_t *s, uint32 slen),
+        Hash32StringWithSeed(reinterpret_cast<const char*>(s),
+                             sizeof(wchar_t) * slen,
+                             MIX32))
+HASH_TO((char c),  Hash32NumWithSeed(static_cast<uint32>(c), MIX32))
+HASH_TO((schar c),  Hash32NumWithSeed(static_cast<uint32>(c), MIX32))
+HASH_TO((uint16 c), Hash32NumWithSeed(static_cast<uint32>(c), MIX32))
+HASH_TO((int16 c),  Hash32NumWithSeed(static_cast<uint32>(c), MIX32))
+HASH_TO((uint32 c), Hash32NumWithSeed(static_cast<uint32>(c), MIX32))
+HASH_TO((int32 c),  Hash32NumWithSeed(static_cast<uint32>(c), MIX32))
+HASH_TO((uint64 c), static_cast<uint32>(Hash64NumWithSeed(c, MIX64) >> 32))
+HASH_TO((int64 c),  static_cast<uint32>(Hash64NumWithSeed(c, MIX64) >> 32))
+#ifdef _LP64
+HASH_TO((intptr_t c),  static_cast<uint32>(Hash64NumWithSeed(c, MIX64) >> 32))
+#endif
+
+#undef HASH_TO        // clean up the macro space
+
+
+// HASH_NAMESPACE_DECLARATION_START
+namespace std {
+
+#if defined(__GNUC__)
+// Use our nice hash function for strings
+// template<class _CharT, class _Traits, class _Alloc>
+// struct hash<basic_string<_CharT, _Traits, _Alloc> > {
+//   size_t operator()(const basic_string<_CharT, _Traits, _Alloc>& k) const {
+//     return HashTo32(k.data(), static_cast<uint32>(k.length()));
+//   }
+// };
+
+// they don't define a hash for const string at all
+template<> struct hash<const string> {
+  size_t operator()(const string& k) const {
+    return HashTo32(k.data(), static_cast<uint32>(k.length()));
+  }
+};
+#endif  // __GNUC__
+
+// MSVC's STL requires an ever-so slightly different decl
+#if defined STL_MSVC
+template<> struct hash<char const*> : PortableHashBase {
+  size_t operator()(char const* const k) const {
+    return HashTo32(k, strlen(k));
+  }
+  // Less than operator:
+  bool operator()(char const* const a, char const* const b) const {
+    return strcmp(a, b) < 0;
+  }
+};
+
+template<> struct hash<string> : PortableHashBase {
+  size_t operator()(const string& k) const {
+    return HashTo32(k.data(), k.length());
+  }
+  // Less than operator:
+  bool operator()(const string& a, const string& b) const {
+    return a < b;
+  }
+};
+
+#endif
+}  // hash namespace
+#endif
 
 namespace {
 // NOTE(user): we have to implement our own interator because

@@ -59,6 +59,7 @@
                             '-Wno-deprecated',
                             '-Wno-ignored-qualifiers',
                             '-Wno-absolute-value',
+                            '-Wno-unused-result',
                             '-Wno-dynamic-class-memaccess',
                             '-DARCH_K8 -DS2_USE_EXACTFLOAT',
                             '-stdlib=libc++',
