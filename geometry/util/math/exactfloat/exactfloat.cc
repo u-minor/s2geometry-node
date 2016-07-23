@@ -4,13 +4,11 @@
 
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
-#include <cmath>
 #else
-#include <cmath>
-#include <math.h>
 #endif
 
-
+#include <math.h>
+#include <cmath>
 #include <cstring>
 #include <algorithm>
 using std::min;
