@@ -1,10 +1,15 @@
 // Copyright 2009 Google Inc. All Rights Reserved.
 
 #include "util/math/exactfloat/exactfloat.h"
-#include <cstring>
-#include <cmath>
+
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
+#else
+#endif
 
 #include <math.h>
+#include <cmath>
+#include <cstring>
 #include <algorithm>
 using std::min;
 using std::max;
