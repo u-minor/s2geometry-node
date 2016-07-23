@@ -104,7 +104,8 @@ inline uint64 Hash64NumWithSeed(uint64 num, uint64 c) {
   return c;
 }
 
-
+/* This part doesn't like to compile on windows OR linux
+   Maybe it needs some tweaking before we can use it
 
 #define HASH_TO(arglist, command)                              \
 inline uint32 HashTo32 arglist {                               \
@@ -189,7 +190,7 @@ template<> struct hash<string> : PortableHashBase {
 
 #endif
 }  // hash namespace
-
+*/
 
 namespace {
 // NOTE(user): we have to implement our own interator because
