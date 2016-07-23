@@ -44,7 +44,7 @@ Some of the S2 API is not wrapped because it isn't meant to be exposed in this w
 
 ## Thanks
 * mapbox team
-* [chperix93](https://github.com/chperix93)
+* [chyperix93](https://github.com/chyperix93)
 
 ## Contact Me 
 [@billyriantono](http://twitter.com/kebluk_id) Feel free to contact me for help or anything else
