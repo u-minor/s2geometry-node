@@ -79,9 +79,9 @@ Returns the stringification of this point as an array.
 longitude, stored internally as [radians](http://en.wikipedia.org/wiki/Radian)
 rather than degrees..
 
-## latLng.lat() -> number
+## latLng.lat -> number
 
-## latLng.lng() -> number
+## latLng.lng -> number
 
 ## latLng.isValid() -> boolean
 
