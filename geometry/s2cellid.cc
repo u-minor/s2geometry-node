@@ -4,6 +4,7 @@
 
 #ifdef _WIN32
 #include <include/pthread.h>
+#include <windows.h>
 #else
 #include <pthread.h>
 #endif
@@ -94,9 +95,21 @@ static void Init() {
   InitLookupCell(0, 0, 0, kSwapMask|kInvertMask, 0, kSwapMask|kInvertMask);
 }
 
+#if _WIN32
+BOOL CALLBACK CallLibInitInternal(PINIT_ONCE InitOnce, PVOID Parameter, PVOID *lpContex) {
+    Init();
+    return TRUE;
+}
+#endif
+
 static pthread_once_t init_once = PTHREAD_ONCE_INIT;
 inline static void MaybeInit() {
-  pthread_once(&init_once, Init);
+  #ifdef _WIN32
+     static INIT_ONCE s_init_once;
+     InitOnceExecuteOnce(&s_init_once, CallLibInitInternal, NULL, NULL);
+  #else
+    pthread_once(&init_once, Init);
+  #endif
 }
 
 int S2CellId::level() const {

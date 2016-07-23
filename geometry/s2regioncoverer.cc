@@ -4,6 +4,7 @@
 
 #ifdef _WIN32
 #include <include/pthread.h>
+#include <windows.h>
 #else
 #include <pthread.h>
 #endif
@@ -54,9 +55,21 @@ void Init() {
   }
 }
 
+#ifdef _WIN32
+BOOL CALLBACK CallRegionCovererInitInternal(PINIT_ONCE InitOnce, PVOID Parameter, PVOID *lpContex) {
+    Init();
+    return TRUE;
+}
+#endif
+
 static pthread_once_t init_once = PTHREAD_ONCE_INIT;
 inline static void MaybeInit() {
-  pthread_once(&init_once, Init);
+   #ifdef _WIN32
+    static INIT_ONCE s_init_once;
+    InitOnceExecuteOnce(&s_init_once, CallRegionCovererInitInternal, NULL, NULL);
+  #else
+    pthread_once(&init_once, Init);
+  #endif
 }
 
 S2RegionCoverer::S2RegionCoverer() :

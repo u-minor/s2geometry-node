@@ -40,7 +40,9 @@
           	    "./viewfinder/viewfinder.cc"
             ],
             "defines": [
-                'NDEBUG'
+                'NDEBUG',
+                'GNU_C',
+                '_GNU_SOURCE'
             ],
             "include_dirs": [
                 "./viewfinder/",
