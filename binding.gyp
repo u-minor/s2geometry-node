@@ -15,7 +15,10 @@
                 "./geometry/s2.cc",
                 "./geometry/s1interval.cc",
                 "./geometry/util/math/exactfloat/exactfloat.cc",
+                "./geometry/base/logging.cc",
+                "./geometry/strings/split.cc",
                 "./geometry/strings/strutil.cc",
+                "./geometry/strings/strtoint.cc",
                 "./geometry/strings/stringprintf.cc",
           	    "./geometry/s2cap.cc",
           	    "./geometry/s1angle.cc",
@@ -32,6 +35,8 @@
           	    "./geometry/s2polygonbuilder.cc",
           	    "./geometry/s2polyline.cc",
           	    "./geometry/s2r2rect.cc",
+          	    "./geometry/s2region.cc",
+          	    "./geometry/s2regioncoverer.cc",
           	    "./viewfinder/viewfinder.cc"
             ],
             "defines": [

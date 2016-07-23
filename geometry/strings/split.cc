@@ -1,7 +1,13 @@
 // Copyright 2008 and onwards Google Inc.  All rights reserved.
 
 #include <limits>
+#include <iterator>
+
+#ifdef _WIN32
+#include <io.h>
+#else
 #include <unistd.h>
+#endif
 using std::numeric_limits;
 
 
@@ -9,7 +15,7 @@ using std::numeric_limits;
 #include "base/integral_types.h"
 #include "base/logging.h"
 #include "base/macros.h"
-#include "base/strtoint.h"
+#include "strings/strtoint.h"
 #include "split.h"
 #include "strutil.h"
 #include "util/hash/hash_jenkins_lookup2.h"
