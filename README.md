@@ -9,6 +9,7 @@ For usage information, see the examples in the `examples/` directory.
 
 ## Todo List 
 -. Porting More Class
+-. Convert to Nan v2
 
 
 ## Currently Ported
