@@ -35,6 +35,9 @@ protected:
     static void Parent(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void Prev(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void Next(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void ChildBegin(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void ChildEnd(const v8::FunctionCallbackInfo<v8::Value>& args);
+    static void Children(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void IsFace(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void RangeMin(const v8::FunctionCallbackInfo<v8::Value>& args);
     static void RangeMax(const v8::FunctionCallbackInfo<v8::Value>& args);

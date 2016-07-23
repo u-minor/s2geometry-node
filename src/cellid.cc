@@ -33,12 +33,15 @@ void CellId::Init(Local<Object> exports) {
     NODE_SET_PROTOTYPE_METHOD(tpl, "parent", Parent);
     NODE_SET_PROTOTYPE_METHOD(tpl, "prev", Prev);
     NODE_SET_PROTOTYPE_METHOD(tpl, "next", Next);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "child_begin", ChildBegin);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "child_end", ChildEnd);
     NODE_SET_PROTOTYPE_METHOD(tpl, "isFace", IsFace);
     NODE_SET_PROTOTYPE_METHOD(tpl, "rangeMin", RangeMin);
     NODE_SET_PROTOTYPE_METHOD(tpl, "rangeMax", RangeMax);
     NODE_SET_PROTOTYPE_METHOD(tpl, "id", Id);
     NODE_SET_PROTOTYPE_METHOD(tpl, "idString", IdString);
     NODE_SET_PROTOTYPE_METHOD(tpl, "child", Child);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "children", Children);
     NODE_SET_PROTOTYPE_METHOD(tpl, "contains", Contains);
 
   constructor.Reset(isolate, tpl);
@@ -176,6 +179,16 @@ void CellId::Next(const FunctionCallbackInfo<Value>& args) {
     args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.next()));
 }
 
+void CellId::ChildBegin(const FunctionCallbackInfo<Value>& args) {
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.child_begin()));
+}
+
+void CellId::ChildEnd(const FunctionCallbackInfo<Value>& args) {
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.child_end()));
+}
+
 
 void CellId::IsFace(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
@@ -198,6 +211,23 @@ void CellId::Contains(const FunctionCallbackInfo<Value>& args) {
     CellId* cellid = node::ObjectWrap::Unwrap<CellId>(args.Holder());
     S2CellId other = node::ObjectWrap::Unwrap<CellId>(args[0]->ToObject())->get();
     args.GetReturnValue().Set(Boolean::New(isolate,cellid->this_.contains(other)));
+}
+
+void CellId::Children(const FunctionCallbackInfo<Value>& args) {
+    Isolate* isolate = args.GetIsolate();
+    CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+    S2CellId cell_id = obj->this_.child_begin();
+    S2CellId end = obj->this_.child_end();
+    Local<Set> nodes = Set::New(isolate);
+
+    while(cell_id != end){
+        char str[21];
+        sprintf(str, "%llu", cell_id.id());
+        Local<String> strValue = String::NewFromUtf8(isolate,str);
+        nodes->Add(isolate->GetCurrentContext(),strValue);
+        cell_id = cell_id.next();
+    }
+    args.GetReturnValue().Set(nodes->AsArray());
 }
 
 void CellId::Id(const FunctionCallbackInfo<Value>& args) {
