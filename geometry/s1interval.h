@@ -2,9 +2,12 @@
 
 #ifndef UTIL_GEOMETRY_S1INTERVAL_H_
 #define UTIL_GEOMETRY_S1INTERVAL_H_
-#define _USE_MATH_DEFINES
 
+#ifdef _WIN32
+#define _USE_MATH_DEFINES
 #include <cmath>
+#endif
+
 #include <iostream>
 using std::ostream;
 using std::cout;
