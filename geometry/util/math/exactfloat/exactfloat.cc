@@ -5,10 +5,13 @@
 #ifdef _WIN32
 #define _USE_MATH_DEFINES
 #include <cmath>
+#else
+#include <cmath>
+#include <math.h>
 #endif
 
+
 #include <cstring>
-#include <math.h>
 #include <algorithm>
 using std::min;
 using std::max;
