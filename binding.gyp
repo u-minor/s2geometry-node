@@ -74,6 +74,27 @@
                     '-DARCH_K8 -DS2_USE_EXACTFLOAT',
                     '-std=c++11'
                     ],
+                }],
+                ['OS=="win"', {
+                    'conditions': [
+                      [
+                        'target_arch=="x64"', {
+                          'variables': {
+                            'openssl_root%': '../openssl/x64'
+                          },
+                        }, {
+                           'variables': {
+                             'openssl_root%': '../openssl/x86'
+                            }
+                        }
+                      ]
+                    ],
+                    'libraries': [ 
+                      '-l<(openssl_root)/lib/libeay32.lib',
+                    ],
+                    'include_dirs': [
+                      '<(openssl_root)/include',
+                    ],
                 }]
             ]
         }
