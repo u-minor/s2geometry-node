@@ -203,7 +203,9 @@ void CellId::Contains(const FunctionCallbackInfo<Value>& args) {
 void CellId::Id(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
     CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
-    args.GetReturnValue().Set(Number::New(isolate,obj->this_.id()));
+    char str[21];
+    sprintf(str, "%llu", obj->this_.id());
+    args.GetReturnValue().Set(String::NewFromUtf8(isolate,str));
 }
 
 void CellId::IdString(const FunctionCallbackInfo<Value>& args){
