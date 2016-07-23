@@ -32,9 +32,6 @@
           	    "./geometry/s2polygonbuilder.cc",
           	    "./geometry/s2polyline.cc",
           	    "./geometry/s2r2rect.cc",
-          	    "./geometry/s2region.cc",
-          	    "./geometry/s2regioncoverer.cc",
-          	    "./geometry/s2regionintersection.cc",
           	    "./viewfinder/viewfinder.cc"
             ],
             "defines": [
