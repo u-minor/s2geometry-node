@@ -7,6 +7,12 @@ Bindings for the [S2 Geometry Library](https://code.google.com/p/s2-geometry-lib
 
 For usage information, see the examples in the `examples/` directory.
 
+## Windows User
+For Windows User please make sure you have installed :
+* Latest NPM Version , for make sure please run : npm install -g npm@next
+* Visual C++ Build Tools
+* Python 2.7
+
 ## Todo List 
 -. Porting More Class
 -. Convert to Nan v2
@@ -44,7 +50,7 @@ Some of the S2 API is not wrapped because it isn't meant to be exposed in this w
 
 ## Thanks
 * mapbox team
-* [cypherix93](https://github.com/cypherix93)
+* [cypherix93](https://github.com/cypherix93) - for make this libs can compile in Windows
 
 ## Contact Me 
 [@billyriantono](http://twitter.com/kebluk_id) Feel free to contact me for help or anything else
