@@ -16,6 +16,7 @@ For Windows User please make sure you have installed :
 ## Todo List 
 -. Porting More Class
 -. Convert to Nan v2
+-. Make  a BAT script for help Windows User checking the requirement.
 
 
 ## Currently Ported
