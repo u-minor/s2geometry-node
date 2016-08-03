@@ -35,6 +35,7 @@ void CellId::Init(Local<Object> exports) {
     NODE_SET_PROTOTYPE_METHOD(tpl, "next", Next);
     NODE_SET_PROTOTYPE_METHOD(tpl, "child_begin", ChildBegin);
     NODE_SET_PROTOTYPE_METHOD(tpl, "child_end", ChildEnd);
+    NODE_SET_PROTOTYPE_METHOD(tpl, "neighbors", Neighbors);
     NODE_SET_PROTOTYPE_METHOD(tpl, "isFace", IsFace);
     NODE_SET_PROTOTYPE_METHOD(tpl, "rangeMin", RangeMin);
     NODE_SET_PROTOTYPE_METHOD(tpl, "rangeMax", RangeMax);
@@ -189,6 +190,16 @@ void CellId::ChildEnd(const FunctionCallbackInfo<Value>& args) {
     args.GetReturnValue().Set(CellId::CreateNew(args,obj->this_.child_end()));
 }
 
+void CellId::Neighbors(const FunctionCallbackInfo<Value>& args) {
+  CellId* obj = node::ObjectWrap::Unwrap<CellId>(args.Holder());
+  S2CellId neighbors[4];
+  obj->this_.GetEdgeNeighbors(neighbors);
+  Local<Array> neighborsArray = Array::New(Isolate::GetCurrent(), 4);
+  args.GetReturnValue().Set(neighborsArray);
+  for (int ii = 0; ii < 4; ++ii) {
+    neighborsArray->Set(ii, CellId::CreateNew(args, neighbors[ii]));
+  }
+}
 
 void CellId::IsFace(const FunctionCallbackInfo<Value>& args) {
     Isolate* isolate = args.GetIsolate();
