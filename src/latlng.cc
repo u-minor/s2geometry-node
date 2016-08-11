@@ -107,14 +107,14 @@ Local<Object> LatLng::CreateNew(const v8::FunctionCallbackInfo<v8::Value>& args,
 
 void LatLng::Lat(v8::Local<v8::String> property, const PropertyCallbackInfo<v8::Value>& args){
     Isolate* isolate = args.GetIsolate();
-    LatLng* obj = ObjectWrap::Unwrap<LatLng>(args.Holder());
+    LatLng* obj = ObjectWrap::Unwrap<LatLng>(args.This());
     args.GetReturnValue().Set(Number::New(isolate,obj->this_.lat().degrees()));
 
 }
 
 void LatLng::Lng(v8::Local<v8::String> property, const PropertyCallbackInfo<v8::Value>& args){
     Isolate* isolate = args.GetIsolate();
-    LatLng* obj = ObjectWrap::Unwrap<LatLng>(args.Holder());
+    LatLng* obj = ObjectWrap::Unwrap<LatLng>(args.This());
     args.GetReturnValue().Set(Number::New(isolate,obj->this_.lng().degrees()));
 
 }
